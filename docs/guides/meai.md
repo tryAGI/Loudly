@@ -1,6 +1,9 @@
 # Microsoft.Extensions.AI Integration
 
-The Loudly SDK provides `AIFunction` tools that can be used with any `IChatClient` from the Microsoft.Extensions.AI ecosystem.
+!!! tip "Cross-SDK comparison"
+    See the [centralized MEAI documentation](https://tryagi.github.io/docs/meai/) for feature matrices and comparisons across all tryAGI SDKs.
+
+The Loudly SDK provides `AIFunction` tool wrappers compatible with [Microsoft.Extensions.AI](https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai). These tools can be used with any `IChatClient` to give AI models access to Loudly's AI music generation, genre listing, and catalog browsing.
 
 ## Available Tools
 
