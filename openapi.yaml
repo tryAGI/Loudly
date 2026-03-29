@@ -1,0 +1,506 @@
+openapi: 3.0.3
+info:
+  title: Loudly Music API
+  description: |
+    AI-powered music generation API by Loudly. Generate royalty-free, copyright-safe music
+    using parameter-based or text-prompt-based generation. Access a catalog of pre-made tracks,
+    AI playlists, instrument stems, and more.
+  version: "1.0.0"
+  contact:
+    name: Loudly
+    url: https://www.loudly.com
+servers:
+  - url: https://soundtracks.loudly.com
+    description: Production server
+security:
+  - ApiKeyAuth: []
+paths:
+  /b2b/account/limits:
+    get:
+      operationId: getAccountLimits
+      summary: Check usage limits
+      description: |
+        Retrieves the usage limits, how much has been used, and how much is left,
+        optionally filtered by a date range.
+      tags:
+        - Account
+      parameters:
+        - name: date_from
+          in: query
+          required: false
+          description: Start date for filtering usage (e.g. 2021-01-01).
+          schema:
+            type: string
+            format: date
+        - name: date_to
+          in: query
+          required: false
+          description: End date for filtering usage (e.g. 2021-01-31).
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: An array of usage limit objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UsageLimit"
+
+  /b2b/songs/tags:
+    get:
+      operationId: getCatalogTags
+      summary: Fetch available tags
+      description: Returns available tags (mood, genre, key) that can be used to filter catalog songs.
+      tags:
+        - Catalog
+      responses:
+        "200":
+          description: An object containing arrays of available moods, genres, and keys.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogTags"
+        "404":
+          description: Tags not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /b2b/songs:
+    get:
+      operationId: getCatalogSongs
+      summary: Fetch catalog songs
+      description: |
+        Retrieves songs from the catalog, optionally filtered by mood, genre, key, and paginated.
+      tags:
+        - Catalog
+      parameters:
+        - name: mood
+          in: query
+          required: false
+          description: Filter by mood.
+          schema:
+            type: string
+        - name: genre
+          in: query
+          required: false
+          description: Filter by genre.
+          schema:
+            type: string
+        - name: key
+          in: query
+          required: false
+          description: Filter by musical key.
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          description: Page number for pagination.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of catalog songs.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CatalogSong"
+
+  /b2b/ai/genres:
+    get:
+      operationId: getAiGenres
+      summary: Get available AI genres
+      description: |
+        Returns a list of available genres for AI song generation. Each genre includes
+        a description, an image URL, and suggested template names and instruments.
+        This endpoint helps you choose values for POST /b2b/ai/songs.
+      tags:
+        - AI
+      responses:
+        "200":
+          description: An array of genre objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AiGenre"
+
+  /b2b/ai/structures:
+    get:
+      operationId: getAiStructures
+      summary: Get available song structures
+      description: |
+        Returns a list of available song structures that can be used when generating
+        AI music with POST /b2b/ai/songs.
+      tags:
+        - AI
+      responses:
+        "200":
+          description: An array of structure objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AiStructure"
+
+  /b2b/ai/prompt/random:
+    get:
+      operationId: getRandomPrompt
+      summary: Get a random text prompt
+      description: |
+        Returns a random text prompt to inspire text-to-music generation
+        using POST /b2b/ai/prompt/songs.
+      tags:
+        - AI
+      responses:
+        "200":
+          description: A random prompt object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RandomPrompt"
+
+  /b2b/ai/songs:
+    post:
+      operationId: generateAiSong
+      summary: Generate AI song (parameter-based)
+      description: |
+        Generates an AI song based on provided parameters such as genre, genre_blend,
+        duration, energy, bpm, key_root, key_quality, instruments, and structure_id.
+      tags:
+        - AI
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/GenerateAiSongRequest"
+      responses:
+        "200":
+          description: The generated AI song.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiSong"
+        "400":
+          description: Bad request (e.g. invalid genre).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error (e.g. rate limit exceeded).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /b2b/ai/prompt/songs:
+    post:
+      operationId: generateAiSongFromPrompt
+      summary: Generate AI song (text prompt)
+      description: |
+        Generates an AI song based on a text prompt. You can optionally specify duration.
+        If the prompt includes a duration, it will be overwritten by the duration parameter
+        if specified separately.
+      tags:
+        - AI
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/GenerateAiSongFromPromptRequest"
+      responses:
+        "200":
+          description: The generated AI song.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiSong"
+        "500":
+          description: Internal server error (e.g. rate limit exceeded).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: API-KEY
+
+  schemas:
+    UsageLimit:
+      type: object
+      properties:
+        request_type:
+          type: string
+          description: The type of request (e.g. ai_song, catalog_song).
+        limit:
+          type: integer
+          description: The total usage limit.
+        used:
+          type: integer
+          description: The amount of usage consumed.
+        left:
+          type: integer
+          description: The remaining usage.
+        date_from:
+          type: string
+          description: Start date of the usage period.
+        date_to:
+          type: string
+          description: End date of the usage period.
+
+    CatalogTags:
+      type: object
+      properties:
+        mood:
+          type: array
+          items:
+            type: string
+          description: Available mood tags.
+        genre:
+          type: array
+          items:
+            type: string
+          description: Available genre tags.
+        key:
+          type: array
+          items:
+            type: string
+          description: Available musical key tags.
+
+    CatalogSong:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the song.
+        title:
+          type: string
+          description: Title of the song.
+        artist:
+          type: string
+          description: Artist name.
+        genres:
+          type: array
+          items:
+            type: string
+          description: Genres associated with the song.
+        moods:
+          type: array
+          items:
+            type: string
+          description: Moods associated with the song.
+        duration:
+          type: number
+          format: float
+          description: Duration of the song in seconds.
+        bpm:
+          type: integer
+          description: Tempo in BPM.
+        key:
+          type: string
+          description: Musical key of the song.
+        music_file_path:
+          type: string
+          description: URL to the music file.
+        wave_form_file_path:
+          type: string
+          description: URL to the waveform data.
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp.
+
+    AiGenre:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the genre.
+        description:
+          type: string
+          description: Description of the genre.
+        image_url:
+          type: string
+          description: URL to the genre image.
+        template_names:
+          type: array
+          items:
+            type: string
+          description: Suggested template names for this genre.
+        instruments:
+          type: array
+          items:
+            type: string
+          description: Available instruments for this genre.
+
+    AiStructure:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the structure.
+        name:
+          type: string
+          description: Name of the structure (e.g. Intro-Verse-Chorus).
+        description:
+          type: string
+          description: Description of the structure.
+        image_url:
+          type: string
+          description: URL to the structure image.
+
+    RandomPrompt:
+      type: object
+      properties:
+        prompt:
+          type: string
+          description: A random text prompt for music generation inspiration.
+
+    GenerateAiSongRequest:
+      type: object
+      required:
+        - genre
+      properties:
+        genre:
+          type: string
+          description: |
+            The main genre or subgenre. Use GET /b2b/ai/genres to see available genres and micro-genres.
+        genre_blend:
+          type: string
+          description: |
+            A secondary genre to blend with the main genre. Use GET /b2b/ai/genres to see available genres.
+        duration:
+          type: integer
+          minimum: 30
+          maximum: 420
+          description: Desired song duration in seconds. Must be between 30 and 420.
+        energy:
+          type: string
+          enum:
+            - low
+            - high
+            - original
+          description: Energy level of the generated song.
+        bpm:
+          type: integer
+          description: |
+            Tempo in BPM. For optimal results, choose a value in the recommended range from GET /b2b/ai/genres.
+        key_root:
+          type: string
+          enum:
+            - C
+            - C#/Db
+            - D
+            - D#/Eb
+            - E
+            - F
+            - F#/Gb
+            - G
+            - G#/Ab
+            - A
+            - A#/Bb
+            - B
+          description: The root note of the musical key.
+        key_quality:
+          type: string
+          enum:
+            - major
+            - minor
+          description: The quality of the musical key.
+        instruments:
+          type: array
+          items:
+            type: string
+          description: |
+            A list of instruments to include. Available instruments depend on the selected genre
+            and are found in GET /b2b/ai/genres. Instruments can be repeated for multiple instances.
+        structure_id:
+          type: integer
+          description: Choose a structure from GET /b2b/ai/structures.
+
+    GenerateAiSongFromPromptRequest:
+      type: object
+      required:
+        - prompt
+      properties:
+        prompt:
+          type: string
+          description: A text description of the desired song.
+        duration:
+          type: integer
+          minimum: 30
+          maximum: 420
+          description: |
+            Desired song duration in seconds (30-420). If the prompt includes a duration,
+            it will be overwritten by this parameter.
+
+    AiSong:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the generated song.
+        title:
+          type: string
+          description: Title of the generated song.
+        duration:
+          type: number
+          format: float
+          description: Duration of the song in seconds.
+        music_file_path:
+          type: string
+          description: URL to the generated music file.
+        xml_file_path:
+          type: string
+          description: URL to the song data XML file.
+        wave_form_file_path:
+          type: string
+          description: URL to the waveform data.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the song was created.
+        bpm:
+          type: integer
+          description: BPM of the generated song.
+        key:
+          $ref: "#/components/schemas/MusicalKey"
+
+    MusicalKey:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the key.
+        name:
+          type: string
+          description: Name of the key (e.g. C major).
+        active:
+          type: boolean
+          description: Whether the key is active.
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error code or message.
+        error_description:
+          type: string
+          description: Detailed description of the error.
