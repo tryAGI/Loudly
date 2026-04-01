@@ -246,6 +246,7 @@ namespace Loudly
             int? duration = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Loudly.GenerateAiSongFromPromptRequest
             {
                 Prompt = prompt,
