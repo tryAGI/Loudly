@@ -6,6 +6,7 @@ namespace Loudly
     public sealed partial class LoudlyClient
     {
         /// <inheritdoc cref="LoudlyClient(global::System.Net.Http.HttpClient?, global::System.Uri?, global::System.Collections.Generic.List{global::Loudly.EndPointAuthorization}?, bool)"/>
+
         public LoudlyClient(
             string apiKey,
             global::System.Net.Http.HttpClient? httpClient = null,

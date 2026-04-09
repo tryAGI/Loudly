@@ -5,6 +5,25 @@ namespace Loudly
 {
     public partial class AiClient
     {
+
+
+        private static readonly global::Loudly.EndPointSecurityRequirement s_GenerateAiSongFromPromptSecurityRequirement0 =
+            new global::Loudly.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Loudly.EndPointAuthorizationRequirement[]
+                {                    new global::Loudly.EndPointAuthorizationRequirement
+                    {
+                        Type = "ApiKey",
+                        Location = "Header",
+                        Name = "API-KEY",
+                        FriendlyName = "ApiKeyInHeader",
+                    },
+                },
+            };
+        private static readonly global::Loudly.EndPointSecurityRequirement[] s_GenerateAiSongFromPromptSecurityRequirements =
+            new global::Loudly.EndPointSecurityRequirement[]
+            {                s_GenerateAiSongFromPromptSecurityRequirement0,
+            };
         partial void PrepareGenerateAiSongFromPromptArguments(
             global::System.Net.Http.HttpClient httpClient,
             global::Loudly.GenerateAiSongFromPromptRequest request);
@@ -43,9 +62,15 @@ namespace Loudly
                 httpClient: HttpClient,
                 request: request);
 
+
+            var __authorizations = global::Loudly.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_GenerateAiSongFromPromptSecurityRequirements,
+                operationName: "GenerateAiSongFromPromptAsync");
+
             var __pathBuilder = new global::Loudly.PathBuilder(
                 path: "/b2b/ai/prompt/songs",
-                baseUri: HttpClient.BaseAddress); 
+                baseUri: HttpClient.BaseAddress);
             var __path = __pathBuilder.ToString();
             using var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
                 method: global::System.Net.Http.HttpMethod.Post,
@@ -55,7 +80,7 @@ namespace Loudly
             __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
 #endif
 
-            foreach (var __authorization in Authorizations)
+            foreach (var __authorization in __authorizations)
             {
                 if (__authorization.Type == "Http" ||
                     __authorization.Type == "OAuth2")

@@ -5,6 +5,25 @@ namespace Loudly
 {
     public partial class AiClient
     {
+
+
+        private static readonly global::Loudly.EndPointSecurityRequirement s_GenerateAiSongSecurityRequirement0 =
+            new global::Loudly.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Loudly.EndPointAuthorizationRequirement[]
+                {                    new global::Loudly.EndPointAuthorizationRequirement
+                    {
+                        Type = "ApiKey",
+                        Location = "Header",
+                        Name = "API-KEY",
+                        FriendlyName = "ApiKeyInHeader",
+                    },
+                },
+            };
+        private static readonly global::Loudly.EndPointSecurityRequirement[] s_GenerateAiSongSecurityRequirements =
+            new global::Loudly.EndPointSecurityRequirement[]
+            {                s_GenerateAiSongSecurityRequirement0,
+            };
         partial void PrepareGenerateAiSongArguments(
             global::System.Net.Http.HttpClient httpClient,
             global::Loudly.GenerateAiSongRequest request);
@@ -42,9 +61,15 @@ namespace Loudly
                 httpClient: HttpClient,
                 request: request);
 
+
+            var __authorizations = global::Loudly.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_GenerateAiSongSecurityRequirements,
+                operationName: "GenerateAiSongAsync");
+
             var __pathBuilder = new global::Loudly.PathBuilder(
                 path: "/b2b/ai/songs",
-                baseUri: HttpClient.BaseAddress); 
+                baseUri: HttpClient.BaseAddress);
             var __path = __pathBuilder.ToString();
             using var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
                 method: global::System.Net.Http.HttpMethod.Post,
@@ -54,7 +79,7 @@ namespace Loudly
             __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
 #endif
 
-            foreach (var __authorization in Authorizations)
+            foreach (var __authorization in __authorizations)
             {
                 if (__authorization.Type == "Http" ||
                     __authorization.Type == "OAuth2")
