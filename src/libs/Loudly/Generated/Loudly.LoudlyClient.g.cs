@@ -15,7 +15,7 @@ namespace Loudly
         /// <summary>
         /// Production server
         /// </summary>
-        public const string DefaultBaseUrl = "https://soundtracks.loudly.com";
+        public const string DefaultBaseUrl = "https://soundtracks.loudly.com/";
 
         private bool _disposeHttpClient = true;
 

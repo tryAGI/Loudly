@@ -5,6 +5,25 @@ namespace Loudly
 {
     public partial class CatalogClient
     {
+
+
+        private static readonly global::Loudly.EndPointSecurityRequirement s_GetCatalogSongsSecurityRequirement0 =
+            new global::Loudly.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Loudly.EndPointAuthorizationRequirement[]
+                {                    new global::Loudly.EndPointAuthorizationRequirement
+                    {
+                        Type = "ApiKey",
+                        Location = "Header",
+                        Name = "API-KEY",
+                        FriendlyName = "ApiKeyInHeader",
+                    },
+                },
+            };
+        private static readonly global::Loudly.EndPointSecurityRequirement[] s_GetCatalogSongsSecurityRequirements =
+            new global::Loudly.EndPointSecurityRequirement[]
+            {                s_GetCatalogSongsSecurityRequirement0,
+            };
         partial void PrepareGetCatalogSongsArguments(
             global::System.Net.Http.HttpClient httpClient,
             ref string? mood,
@@ -53,6 +72,12 @@ namespace Loudly
                 key: ref key,
                 page: ref page);
 
+
+            var __authorizations = global::Loudly.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_GetCatalogSongsSecurityRequirements,
+                operationName: "GetCatalogSongsAsync");
+
             var __pathBuilder = new global::Loudly.PathBuilder(
                 path: "/b2b/songs",
                 baseUri: HttpClient.BaseAddress); 
@@ -61,7 +86,7 @@ namespace Loudly
                 .AddOptionalParameter("genre", genre)
                 .AddOptionalParameter("key", key)
                 .AddOptionalParameter("page", page?.ToString()) 
-                ; 
+                ;
             var __path = __pathBuilder.ToString();
             using var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
                 method: global::System.Net.Http.HttpMethod.Get,
@@ -71,7 +96,7 @@ namespace Loudly
             __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
 #endif
 
-            foreach (var __authorization in Authorizations)
+            foreach (var __authorization in __authorizations)
             {
                 if (__authorization.Type == "Http" ||
                     __authorization.Type == "OAuth2")

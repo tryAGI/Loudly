@@ -5,6 +5,25 @@ namespace Loudly
 {
     public partial class AccountClient
     {
+
+
+        private static readonly global::Loudly.EndPointSecurityRequirement s_GetAccountLimitsSecurityRequirement0 =
+            new global::Loudly.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Loudly.EndPointAuthorizationRequirement[]
+                {                    new global::Loudly.EndPointAuthorizationRequirement
+                    {
+                        Type = "ApiKey",
+                        Location = "Header",
+                        Name = "API-KEY",
+                        FriendlyName = "ApiKeyInHeader",
+                    },
+                },
+            };
+        private static readonly global::Loudly.EndPointSecurityRequirement[] s_GetAccountLimitsSecurityRequirements =
+            new global::Loudly.EndPointSecurityRequirement[]
+            {                s_GetAccountLimitsSecurityRequirement0,
+            };
         partial void PrepareGetAccountLimitsArguments(
             global::System.Net.Http.HttpClient httpClient,
             ref global::System.DateTime? dateFrom,
@@ -44,13 +63,19 @@ namespace Loudly
                 dateFrom: ref dateFrom,
                 dateTo: ref dateTo);
 
+
+            var __authorizations = global::Loudly.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_GetAccountLimitsSecurityRequirements,
+                operationName: "GetAccountLimitsAsync");
+
             var __pathBuilder = new global::Loudly.PathBuilder(
                 path: "/b2b/account/limits",
                 baseUri: HttpClient.BaseAddress); 
             __pathBuilder
                 .AddOptionalParameter("date_from", dateFrom?.ToString("yyyy-MM-dd"))
                 .AddOptionalParameter("date_to", dateTo?.ToString("yyyy-MM-dd")) 
-                ; 
+                ;
             var __path = __pathBuilder.ToString();
             using var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
                 method: global::System.Net.Http.HttpMethod.Get,
@@ -60,7 +85,7 @@ namespace Loudly
             __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
 #endif
 
-            foreach (var __authorization in Authorizations)
+            foreach (var __authorization in __authorizations)
             {
                 if (__authorization.Type == "Http" ||
                     __authorization.Type == "OAuth2")

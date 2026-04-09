@@ -5,6 +5,25 @@ namespace Loudly
 {
     public partial class AiClient
     {
+
+
+        private static readonly global::Loudly.EndPointSecurityRequirement s_GetAiStructuresSecurityRequirement0 =
+            new global::Loudly.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Loudly.EndPointAuthorizationRequirement[]
+                {                    new global::Loudly.EndPointAuthorizationRequirement
+                    {
+                        Type = "ApiKey",
+                        Location = "Header",
+                        Name = "API-KEY",
+                        FriendlyName = "ApiKeyInHeader",
+                    },
+                },
+            };
+        private static readonly global::Loudly.EndPointSecurityRequirement[] s_GetAiStructuresSecurityRequirements =
+            new global::Loudly.EndPointSecurityRequirement[]
+            {                s_GetAiStructuresSecurityRequirement0,
+            };
         partial void PrepareGetAiStructuresArguments(
             global::System.Net.Http.HttpClient httpClient);
         partial void PrepareGetAiStructuresRequest(
@@ -34,9 +53,15 @@ namespace Loudly
             PrepareGetAiStructuresArguments(
                 httpClient: HttpClient);
 
+
+            var __authorizations = global::Loudly.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_GetAiStructuresSecurityRequirements,
+                operationName: "GetAiStructuresAsync");
+
             var __pathBuilder = new global::Loudly.PathBuilder(
                 path: "/b2b/ai/structures",
-                baseUri: HttpClient.BaseAddress); 
+                baseUri: HttpClient.BaseAddress);
             var __path = __pathBuilder.ToString();
             using var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
                 method: global::System.Net.Http.HttpMethod.Get,
@@ -46,7 +71,7 @@ namespace Loudly
             __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
 #endif
 
-            foreach (var __authorization in Authorizations)
+            foreach (var __authorization in __authorizations)
             {
                 if (__authorization.Type == "Http" ||
                     __authorization.Type == "OAuth2")
