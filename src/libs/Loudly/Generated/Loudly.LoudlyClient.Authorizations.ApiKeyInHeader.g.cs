@@ -26,6 +26,7 @@ namespace Loudly
             Authorizations.Add(new global::Loudly.EndPointAuthorization
             {
                 Type = "ApiKey",
+                SchemeId = "ApikeyApiKey",
                 Location = "Header",
                 Name = "API-KEY",
                 Value = apiKey,
