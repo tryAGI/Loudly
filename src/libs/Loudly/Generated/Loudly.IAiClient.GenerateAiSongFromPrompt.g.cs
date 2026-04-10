@@ -11,11 +11,13 @@ namespace Loudly
         /// if specified separately.
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::Loudly.ApiException"></exception>
         global::System.Threading.Tasks.Task<global::Loudly.AiSong> GenerateAiSongFromPromptAsync(
 
             global::Loudly.GenerateAiSongFromPromptRequest request,
+            global::Loudly.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Generate AI song (text prompt)<br/>
@@ -30,11 +32,13 @@ namespace Loudly
         /// Desired song duration in seconds (30-420). If the prompt includes a duration,<br/>
         /// it will be overwritten by this parameter.
         /// </param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::System.InvalidOperationException"></exception>
         global::System.Threading.Tasks.Task<global::Loudly.AiSong> GenerateAiSongFromPromptAsync(
             string prompt,
             int? duration = default,
+            global::Loudly.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
     }
 }

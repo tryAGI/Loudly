@@ -10,11 +10,13 @@ namespace Loudly
         /// duration, energy, bpm, key_root, key_quality, instruments, and structure_id.
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::Loudly.ApiException"></exception>
         global::System.Threading.Tasks.Task<global::Loudly.AiSong> GenerateAiSongAsync(
 
             global::Loudly.GenerateAiSongRequest request,
+            global::Loudly.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Generate AI song (parameter-based)<br/>
@@ -49,6 +51,7 @@ namespace Loudly
         /// <param name="structureId">
         /// Choose a structure from GET /b2b/ai/structures.
         /// </param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::System.InvalidOperationException"></exception>
         global::System.Threading.Tasks.Task<global::Loudly.AiSong> GenerateAiSongAsync(
@@ -61,6 +64,7 @@ namespace Loudly
             global::Loudly.GenerateAiSongRequestKeyQuality? keyQuality = default,
             global::System.Collections.Generic.IList<string>? instruments = default,
             int? structureId = default,
+            global::Loudly.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
     }
 }
