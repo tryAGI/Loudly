@@ -120,48 +120,48 @@ namespace Loudly
             }
                             var __httpRequestContent = new global::System.Net.Http.MultipartFormDataContent();
                             __httpRequestContent.Add(
-                                content: new global::System.Net.Http.StringContent($"{request.Genre}"),
+                                content: new global::System.Net.Http.StringContent(request.Genre ?? string.Empty),
                                 name: "\"genre\"");
                             if (request.GenreBlend != default)
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"{request.GenreBlend}"),
+                                    content: new global::System.Net.Http.StringContent(request.GenreBlend ?? string.Empty),
                                     name: "\"genre_blend\"");
                             } 
                             if (request.Duration != default)
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"{request.Duration}"),
+                                    content: new global::System.Net.Http.StringContent(global::System.Convert.ToString(request.Duration, global::System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty),
                                     name: "\"duration\"");
                             } 
                             if (request.Energy != default)
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"{request.Energy?.ToValueString()}"),
+                                    content: new global::System.Net.Http.StringContent((request.Energy).HasValue ? (request.Energy).GetValueOrDefault().ToValueString() : string.Empty),
                                     name: "\"energy\"");
                             } 
                             if (request.Bpm != default)
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"{request.Bpm}"),
+                                    content: new global::System.Net.Http.StringContent(global::System.Convert.ToString(request.Bpm, global::System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty),
                                     name: "\"bpm\"");
                             } 
                             if (request.KeyRoot != default)
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"{request.KeyRoot?.ToValueString()}"),
+                                    content: new global::System.Net.Http.StringContent((request.KeyRoot).HasValue ? (request.KeyRoot).GetValueOrDefault().ToValueString() : string.Empty),
                                     name: "\"key_root\"");
                             } 
                             if (request.KeyQuality != default)
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"{request.KeyQuality?.ToValueString()}"),
+                                    content: new global::System.Net.Http.StringContent((request.KeyQuality).HasValue ? (request.KeyQuality).GetValueOrDefault().ToValueString() : string.Empty),
                                     name: "\"key_quality\"");
                             } 
                             if (request.Instruments != default)
@@ -175,7 +175,7 @@ namespace Loudly
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"{request.StructureId}"),
+                                    content: new global::System.Net.Http.StringContent(global::System.Convert.ToString(request.StructureId, global::System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty),
                                     name: "\"structure_id\"");
                             }
                             __httpRequest.Content = __httpRequestContent;
