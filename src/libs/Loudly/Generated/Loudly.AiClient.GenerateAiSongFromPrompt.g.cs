@@ -121,13 +121,13 @@ namespace Loudly
             }
                             var __httpRequestContent = new global::System.Net.Http.MultipartFormDataContent();
                             __httpRequestContent.Add(
-                                content: new global::System.Net.Http.StringContent($"{request.Prompt}"),
+                                content: new global::System.Net.Http.StringContent(request.Prompt ?? string.Empty),
                                 name: "\"prompt\"");
                             if (request.Duration != default)
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"{request.Duration}"),
+                                    content: new global::System.Net.Http.StringContent(global::System.Convert.ToString(request.Duration, global::System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty),
                                     name: "\"duration\"");
                             }
                             __httpRequest.Content = __httpRequestContent;
