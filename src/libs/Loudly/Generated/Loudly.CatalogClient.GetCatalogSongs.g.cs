@@ -66,6 +66,36 @@ namespace Loudly
             global::Loudly.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+            var __response = await GetCatalogSongsAsResponseAsync(
+                mood: mood,
+                genre: genre,
+                key: key,
+                page: page,
+                requestOptions: requestOptions,
+                cancellationToken: cancellationToken
+            ).ConfigureAwait(false);
+
+            return __response.Body;
+        }
+        /// <summary>
+        /// Fetch catalog songs<br/>
+        /// Retrieves songs from the catalog, optionally filtered by mood, genre, key, and paginated.
+        /// </summary>
+        /// <param name="mood"></param>
+        /// <param name="genre"></param>
+        /// <param name="key"></param>
+        /// <param name="page"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Loudly.ApiException"></exception>
+        public async global::System.Threading.Tasks.Task<global::Loudly.AutoSDKHttpResponse<global::System.Collections.Generic.IList<global::Loudly.CatalogSong>>> GetCatalogSongsAsResponseAsync(
+            string? mood = default,
+            string? genre = default,
+            string? key = default,
+            int? page = default,
+            global::Loudly.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
             PrepareArguments(
                 client: HttpClient);
             PrepareGetCatalogSongsArguments(
@@ -97,14 +127,15 @@ namespace Loudly
 
             global::System.Net.Http.HttpRequestMessage __CreateHttpRequest()
             {
+
                             var __pathBuilder = new global::Loudly.PathBuilder(
                                 path: "/b2b/songs",
-                                baseUri: HttpClient.BaseAddress); 
+                                baseUri: HttpClient.BaseAddress);
                             __pathBuilder
                                 .AddOptionalParameter("mood", mood)
                                 .AddOptionalParameter("genre", genre)
                                 .AddOptionalParameter("key", key)
-                                .AddOptionalParameter("page", page?.ToString()) 
+                                .AddOptionalParameter("page", page?.ToString())
                                 ;
                             var __path = __pathBuilder.ToString();
                 __path = global::Loudly.AutoSDKRequestOptionsSupport.AppendQueryParameters(
@@ -179,6 +210,8 @@ namespace Loudly
                                 attempt: __attempt,
                                 maxAttempts: __maxAttempts,
                                 willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                     try
                     {
@@ -189,6 +222,11 @@ namespace Loudly
                     }
                     catch (global::System.Net.Http.HttpRequestException __exception)
                     {
+                        var __retryDelay = global::Loudly.AutoSDKRequestOptionsSupport.GetRetryDelay(
+                            clientOptions: Options,
+                            requestOptions: requestOptions,
+                            response: null,
+                            attempt: __attempt);
                         var __willRetry = __attempt < __maxAttempts && !__effectiveCancellationToken.IsCancellationRequested;
                         await global::Loudly.AutoSDKRequestOptionsSupport.OnAfterErrorAsync(
                             clientOptions: Options,
@@ -206,6 +244,8 @@ namespace Loudly
                                 attempt: __attempt,
                                 maxAttempts: __maxAttempts,
                                 willRetry: __willRetry,
+                                retryDelay: __willRetry ? __retryDelay : (global::System.TimeSpan?)null,
+                                retryReason: "exception",
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                         if (!__willRetry)
                         {
@@ -215,8 +255,7 @@ namespace Loudly
                         __httpRequest.Dispose();
                         __httpRequest = null;
                         await global::Loudly.AutoSDKRequestOptionsSupport.DelayBeforeRetryAsync(
-                            clientOptions: Options,
-                            requestOptions: requestOptions,
+                            retryDelay: __retryDelay,
                             cancellationToken: __effectiveCancellationToken).ConfigureAwait(false);
                         continue;
                     }
@@ -225,6 +264,11 @@ namespace Loudly
                         __attempt < __maxAttempts &&
                         global::Loudly.AutoSDKRequestOptionsSupport.ShouldRetryStatusCode(__response.StatusCode))
                     {
+                        var __retryDelay = global::Loudly.AutoSDKRequestOptionsSupport.GetRetryDelay(
+                            clientOptions: Options,
+                            requestOptions: requestOptions,
+                            response: __response,
+                            attempt: __attempt);
                         await global::Loudly.AutoSDKRequestOptionsSupport.OnAfterErrorAsync(
                             clientOptions: Options,
                             context: global::Loudly.AutoSDKRequestOptionsSupport.CreateHookContext(
@@ -241,14 +285,15 @@ namespace Loudly
                                 attempt: __attempt,
                                 maxAttempts: __maxAttempts,
                                 willRetry: true,
+                                retryDelay: __retryDelay,
+                                retryReason: "status:" + ((int)__response.StatusCode).ToString(global::System.Globalization.CultureInfo.InvariantCulture),
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                         __response.Dispose();
                         __response = null;
                         __httpRequest.Dispose();
                         __httpRequest = null;
                         await global::Loudly.AutoSDKRequestOptionsSupport.DelayBeforeRetryAsync(
-                            clientOptions: Options,
-                            requestOptions: requestOptions,
+                            retryDelay: __retryDelay,
                             cancellationToken: __effectiveCancellationToken).ConfigureAwait(false);
                         continue;
                     }
@@ -288,6 +333,8 @@ namespace Loudly
                                 attempt: __attemptNumber,
                                 maxAttempts: __maxAttempts,
                                 willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                 }
                 else
@@ -308,6 +355,8 @@ namespace Loudly
                                 attempt: __attemptNumber,
                                 maxAttempts: __maxAttempts,
                                 willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                 }
 
@@ -332,9 +381,13 @@ namespace Loudly
                                 {
                                     __response.EnsureSuccessStatusCode();
 
-                                    return
-                                        (global::System.Collections.Generic.IList<global::Loudly.CatalogSong>?)global::System.Text.Json.JsonSerializer.Deserialize(__content, typeof(global::System.Collections.Generic.IList<global::Loudly.CatalogSong>), JsonSerializerContext) ??
+                                    var __value = (global::System.Collections.Generic.IList<global::Loudly.CatalogSong>?)global::System.Text.Json.JsonSerializer.Deserialize(__content, typeof(global::System.Collections.Generic.IList<global::Loudly.CatalogSong>), JsonSerializerContext) ??
                                         throw new global::System.InvalidOperationException($"Response deserialization failed for \"{__content}\" ");
+                                    return new global::Loudly.AutoSDKHttpResponse<global::System.Collections.Generic.IList<global::Loudly.CatalogSong>>(
+                                        statusCode: __response.StatusCode,
+                                        headers: global::Loudly.AutoSDKHttpResponse.CreateHeaders(__response),
+                                        requestUri: __response.RequestMessage?.RequestUri,
+                                        body: __value);
                                 }
                                 catch (global::System.Exception __ex)
                                 {
@@ -362,9 +415,13 @@ namespace Loudly
                 #endif
                                     ).ConfigureAwait(false);
 
-                                    return
-                                        (global::System.Collections.Generic.IList<global::Loudly.CatalogSong>?)await global::System.Text.Json.JsonSerializer.DeserializeAsync(__content, typeof(global::System.Collections.Generic.IList<global::Loudly.CatalogSong>), JsonSerializerContext).ConfigureAwait(false) ??
+                                    var __value = (global::System.Collections.Generic.IList<global::Loudly.CatalogSong>?)await global::System.Text.Json.JsonSerializer.DeserializeAsync(__content, typeof(global::System.Collections.Generic.IList<global::Loudly.CatalogSong>), JsonSerializerContext).ConfigureAwait(false) ??
                                         throw new global::System.InvalidOperationException("Response deserialization failed.");
+                                    return new global::Loudly.AutoSDKHttpResponse<global::System.Collections.Generic.IList<global::Loudly.CatalogSong>>(
+                                        statusCode: __response.StatusCode,
+                                        headers: global::Loudly.AutoSDKHttpResponse.CreateHeaders(__response),
+                                        requestUri: __response.RequestMessage?.RequestUri,
+                                        body: __value);
                                 }
                                 catch (global::System.Exception __ex)
                                 {

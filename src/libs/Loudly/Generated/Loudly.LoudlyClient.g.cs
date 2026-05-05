@@ -45,7 +45,7 @@ namespace Loudly
         /// <summary>
         /// 
         /// </summary>
-        public AccountClient Account => new AccountClient(HttpClient, authorizations: Authorizations, options: Options)
+        public AccountClient Account => new AccountClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
             ReadResponseAsString = ReadResponseAsString,
             JsonSerializerContext = JsonSerializerContext,
@@ -54,7 +54,7 @@ namespace Loudly
         /// <summary>
         /// 
         /// </summary>
-        public AiClient Ai => new AiClient(HttpClient, authorizations: Authorizations, options: Options)
+        public AiClient Ai => new AiClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
             ReadResponseAsString = ReadResponseAsString,
             JsonSerializerContext = JsonSerializerContext,
@@ -63,7 +63,7 @@ namespace Loudly
         /// <summary>
         /// 
         /// </summary>
-        public CatalogClient Catalog => new CatalogClient(HttpClient, authorizations: Authorizations, options: Options)
+        public CatalogClient Catalog => new CatalogClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
             ReadResponseAsString = ReadResponseAsString,
             JsonSerializerContext = JsonSerializerContext,
@@ -102,10 +102,10 @@ namespace Loudly
         /// <param name="options">Client-wide request defaults such as headers, query parameters, retries, and timeout.</param>
         /// <param name="disposeHttpClient">Dispose the HttpClient when the instance is disposed. True by default.</param>
         public LoudlyClient(
-            global::System.Net.Http.HttpClient? httpClient = null,
-            global::System.Uri? baseUri = null,
-            global::System.Collections.Generic.List<global::Loudly.EndPointAuthorization>? authorizations = null,
-            global::Loudly.AutoSDKClientOptions? options = null,
+            global::System.Net.Http.HttpClient? httpClient,
+            global::System.Uri? baseUri,
+            global::System.Collections.Generic.List<global::Loudly.EndPointAuthorization>? authorizations,
+            global::Loudly.AutoSDKClientOptions? options,
             bool disposeHttpClient = true)
         {
 

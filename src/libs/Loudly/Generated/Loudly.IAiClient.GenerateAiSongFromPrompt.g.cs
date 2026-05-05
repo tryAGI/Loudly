@@ -25,6 +25,21 @@ namespace Loudly
         /// If the prompt includes a duration, it will be overwritten by the duration parameter<br/>
         /// if specified separately.
         /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Loudly.ApiException"></exception>
+        global::System.Threading.Tasks.Task<global::Loudly.AutoSDKHttpResponse<global::Loudly.AiSong>> GenerateAiSongFromPromptAsResponseAsync(
+
+            global::Loudly.GenerateAiSongFromPromptRequest request,
+            global::Loudly.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Generate AI song (text prompt)<br/>
+        /// Generates an AI song based on a text prompt. You can optionally specify duration.<br/>
+        /// If the prompt includes a duration, it will be overwritten by the duration parameter<br/>
+        /// if specified separately.
+        /// </summary>
         /// <param name="prompt">
         /// A text description of the desired song.
         /// </param>
