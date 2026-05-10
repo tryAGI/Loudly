@@ -74,5 +74,6 @@ namespace Loudly
         public AiStructure()
         {
         }
+
     }
 }

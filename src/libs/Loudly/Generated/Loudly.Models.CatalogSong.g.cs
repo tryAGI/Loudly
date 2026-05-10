@@ -151,5 +151,6 @@ namespace Loudly
         public CatalogSong()
         {
         }
+
     }
 }

@@ -96,5 +96,6 @@ namespace Loudly
         public UsageLimit()
         {
         }
+
     }
 }
