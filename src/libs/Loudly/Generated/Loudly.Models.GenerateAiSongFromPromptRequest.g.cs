@@ -55,5 +55,6 @@ namespace Loudly
         public GenerateAiSongFromPromptRequest()
         {
         }
+
     }
 }

@@ -41,5 +41,6 @@ namespace Loudly
         public RandomPrompt()
         {
         }
+
     }
 }
