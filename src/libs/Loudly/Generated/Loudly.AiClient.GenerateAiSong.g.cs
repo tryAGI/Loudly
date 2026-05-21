@@ -56,6 +56,30 @@ namespace Loudly
             global::Loudly.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+            var __response = await GenerateAiSongAsResponseAsync(
+
+                request: request,
+                requestOptions: requestOptions,
+                cancellationToken: cancellationToken
+            ).ConfigureAwait(false);
+
+            return __response.Body;
+        }
+        /// <summary>
+        /// Generate AI song (parameter-based)<br/>
+        /// Generates an AI song based on provided parameters such as genre, genre_blend,<br/>
+        /// duration, energy, bpm, key_root, key_quality, instruments, and structure_id.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Loudly.ApiException"></exception>
+        public async global::System.Threading.Tasks.Task<global::Loudly.AutoSDKHttpResponse<global::Loudly.AiSong>> GenerateAiSongAsResponseAsync(
+
+            global::Loudly.GenerateAiSongRequest request,
+            global::Loudly.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
             request = request ?? throw new global::System.ArgumentNullException(nameof(request));
 
             PrepareArguments(
@@ -82,10 +106,11 @@ namespace Loudly
             var __maxAttempts = global::Loudly.AutoSDKRequestOptionsSupport.GetMaxAttempts(
                 clientOptions: Options,
                 requestOptions: requestOptions,
-                supportsRetry: true);
+                supportsRetry: false);
 
             global::System.Net.Http.HttpRequestMessage __CreateHttpRequest()
             {
+
                             var __pathBuilder = new global::Loudly.PathBuilder(
                                 path: "/b2b/ai/songs",
                                 baseUri: HttpClient.BaseAddress);
@@ -118,67 +143,79 @@ namespace Loudly
                     __httpRequest.Headers.Add(__authorization.Name, __authorization.Value);
                 } 
             }
+
                             var __httpRequestContent = new global::System.Net.Http.MultipartFormDataContent();
                             __httpRequestContent.Add(
                                 content: new global::System.Net.Http.StringContent(request.Genre ?? string.Empty),
                                 name: "\"genre\"");
+
                             if (request.GenreBlend != default)
                             {
 
                                 __httpRequestContent.Add(
                                     content: new global::System.Net.Http.StringContent(request.GenreBlend ?? string.Empty),
                                     name: "\"genre_blend\"");
-                            } 
+
+                            }
                             if (request.Duration != default)
                             {
 
                                 __httpRequestContent.Add(
                                     content: new global::System.Net.Http.StringContent(global::System.Convert.ToString(request.Duration, global::System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty),
                                     name: "\"duration\"");
-                            } 
+
+                            }
                             if (request.Energy != default)
                             {
 
                                 __httpRequestContent.Add(
                                     content: new global::System.Net.Http.StringContent((request.Energy).HasValue ? (request.Energy).GetValueOrDefault().ToValueString() : string.Empty),
                                     name: "\"energy\"");
-                            } 
+
+                            }
                             if (request.Bpm != default)
                             {
 
                                 __httpRequestContent.Add(
                                     content: new global::System.Net.Http.StringContent(global::System.Convert.ToString(request.Bpm, global::System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty),
                                     name: "\"bpm\"");
-                            } 
+
+                            }
                             if (request.KeyRoot != default)
                             {
 
                                 __httpRequestContent.Add(
                                     content: new global::System.Net.Http.StringContent((request.KeyRoot).HasValue ? (request.KeyRoot).GetValueOrDefault().ToValueString() : string.Empty),
                                     name: "\"key_root\"");
-                            } 
+
+                            }
                             if (request.KeyQuality != default)
                             {
 
                                 __httpRequestContent.Add(
                                     content: new global::System.Net.Http.StringContent((request.KeyQuality).HasValue ? (request.KeyQuality).GetValueOrDefault().ToValueString() : string.Empty),
                                     name: "\"key_quality\"");
-                            } 
+
+                            }
                             if (request.Instruments != default)
                             {
 
                                 __httpRequestContent.Add(
                                     content: new global::System.Net.Http.StringContent($"[{string.Join(",", global::System.Linq.Enumerable.Select(request.Instruments, x => x))}]"),
                                     name: "\"instruments\"");
-                            } 
+
+                            }
                             if (request.StructureId != default)
                             {
 
                                 __httpRequestContent.Add(
                                     content: new global::System.Net.Http.StringContent(global::System.Convert.ToString(request.StructureId, global::System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty),
                                     name: "\"structure_id\"");
+
                             }
+
                             __httpRequest.Content = __httpRequestContent;
+
                 global::Loudly.AutoSDKRequestOptionsSupport.ApplyHeaders(
                     request: __httpRequest,
                     clientHeaders: Options.Headers,
@@ -220,6 +257,8 @@ namespace Loudly
                                 attempt: __attempt,
                                 maxAttempts: __maxAttempts,
                                 willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                     try
                     {
@@ -230,6 +269,11 @@ namespace Loudly
                     }
                     catch (global::System.Net.Http.HttpRequestException __exception)
                     {
+                        var __retryDelay = global::Loudly.AutoSDKRequestOptionsSupport.GetRetryDelay(
+                            clientOptions: Options,
+                            requestOptions: requestOptions,
+                            response: null,
+                            attempt: __attempt);
                         var __willRetry = __attempt < __maxAttempts && !__effectiveCancellationToken.IsCancellationRequested;
                         await global::Loudly.AutoSDKRequestOptionsSupport.OnAfterErrorAsync(
                             clientOptions: Options,
@@ -247,6 +291,8 @@ namespace Loudly
                                 attempt: __attempt,
                                 maxAttempts: __maxAttempts,
                                 willRetry: __willRetry,
+                                retryDelay: __willRetry ? __retryDelay : (global::System.TimeSpan?)null,
+                                retryReason: "exception",
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                         if (!__willRetry)
                         {
@@ -256,8 +302,7 @@ namespace Loudly
                         __httpRequest.Dispose();
                         __httpRequest = null;
                         await global::Loudly.AutoSDKRequestOptionsSupport.DelayBeforeRetryAsync(
-                            clientOptions: Options,
-                            requestOptions: requestOptions,
+                            retryDelay: __retryDelay,
                             cancellationToken: __effectiveCancellationToken).ConfigureAwait(false);
                         continue;
                     }
@@ -266,6 +311,11 @@ namespace Loudly
                         __attempt < __maxAttempts &&
                         global::Loudly.AutoSDKRequestOptionsSupport.ShouldRetryStatusCode(__response.StatusCode))
                     {
+                        var __retryDelay = global::Loudly.AutoSDKRequestOptionsSupport.GetRetryDelay(
+                            clientOptions: Options,
+                            requestOptions: requestOptions,
+                            response: __response,
+                            attempt: __attempt);
                         await global::Loudly.AutoSDKRequestOptionsSupport.OnAfterErrorAsync(
                             clientOptions: Options,
                             context: global::Loudly.AutoSDKRequestOptionsSupport.CreateHookContext(
@@ -282,14 +332,15 @@ namespace Loudly
                                 attempt: __attempt,
                                 maxAttempts: __maxAttempts,
                                 willRetry: true,
+                                retryDelay: __retryDelay,
+                                retryReason: "status:" + ((int)__response.StatusCode).ToString(global::System.Globalization.CultureInfo.InvariantCulture),
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                         __response.Dispose();
                         __response = null;
                         __httpRequest.Dispose();
                         __httpRequest = null;
                         await global::Loudly.AutoSDKRequestOptionsSupport.DelayBeforeRetryAsync(
-                            clientOptions: Options,
-                            requestOptions: requestOptions,
+                            retryDelay: __retryDelay,
                             cancellationToken: __effectiveCancellationToken).ConfigureAwait(false);
                         continue;
                     }
@@ -329,6 +380,8 @@ namespace Loudly
                                 attempt: __attemptNumber,
                                 maxAttempts: __maxAttempts,
                                 willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                 }
                 else
@@ -349,6 +402,8 @@ namespace Loudly
                                 attempt: __attemptNumber,
                                 maxAttempts: __maxAttempts,
                                 willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
                                 cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
                 }
                             // Bad request (e.g. invalid genre).
@@ -449,9 +504,13 @@ namespace Loudly
                                 {
                                     __response.EnsureSuccessStatusCode();
 
-                                    return
-                                        global::Loudly.AiSong.FromJson(__content, JsonSerializerContext) ??
+                                    var __value = global::Loudly.AiSong.FromJson(__content, JsonSerializerContext) ??
                                         throw new global::System.InvalidOperationException($"Response deserialization failed for \"{__content}\" ");
+                                    return new global::Loudly.AutoSDKHttpResponse<global::Loudly.AiSong>(
+                                        statusCode: __response.StatusCode,
+                                        headers: global::Loudly.AutoSDKHttpResponse.CreateHeaders(__response),
+                                        requestUri: __response.RequestMessage?.RequestUri,
+                                        body: __value);
                                 }
                                 catch (global::System.Exception __ex)
                                 {
@@ -479,9 +538,13 @@ namespace Loudly
                 #endif
                                     ).ConfigureAwait(false);
 
-                                    return
-                                        await global::Loudly.AiSong.FromJsonStreamAsync(__content, JsonSerializerContext).ConfigureAwait(false) ??
+                                    var __value = await global::Loudly.AiSong.FromJsonStreamAsync(__content, JsonSerializerContext).ConfigureAwait(false) ??
                                         throw new global::System.InvalidOperationException("Response deserialization failed.");
+                                    return new global::Loudly.AutoSDKHttpResponse<global::Loudly.AiSong>(
+                                        statusCode: __response.StatusCode,
+                                        headers: global::Loudly.AutoSDKHttpResponse.CreateHeaders(__response),
+                                        requestUri: __response.RequestMessage?.RequestUri,
+                                        body: __value);
                                 }
                                 catch (global::System.Exception __ex)
                                 {

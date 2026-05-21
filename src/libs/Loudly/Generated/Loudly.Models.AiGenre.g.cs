@@ -85,5 +85,6 @@ namespace Loudly
         public AiGenre()
         {
         }
+
     }
 }

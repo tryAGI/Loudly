@@ -23,6 +23,20 @@ namespace Loudly
         /// Generates an AI song based on provided parameters such as genre, genre_blend,<br/>
         /// duration, energy, bpm, key_root, key_quality, instruments, and structure_id.
         /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Loudly.ApiException"></exception>
+        global::System.Threading.Tasks.Task<global::Loudly.AutoSDKHttpResponse<global::Loudly.AiSong>> GenerateAiSongAsResponseAsync(
+
+            global::Loudly.GenerateAiSongRequest request,
+            global::Loudly.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Generate AI song (parameter-based)<br/>
+        /// Generates an AI song based on provided parameters such as genre, genre_blend,<br/>
+        /// duration, energy, bpm, key_root, key_quality, instruments, and structure_id.
+        /// </summary>
         /// <param name="genre">
         /// The main genre or subgenre. Use GET /b2b/ai/genres to see available genres and micro-genres.
         /// </param>
