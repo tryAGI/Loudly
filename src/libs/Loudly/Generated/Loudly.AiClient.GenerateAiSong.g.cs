@@ -201,7 +201,7 @@ namespace Loudly
                             {
 
                                 __httpRequestContent.Add(
-                                    content: new global::System.Net.Http.StringContent($"[{string.Join(",", global::System.Linq.Enumerable.Select(request.Instruments, x => x))}]"),
+                                    content: new global::System.Net.Http.StringContent($"[{string.Join(",", global::System.Linq.Enumerable.Select(request.Instruments!, x => x))}]"),
                                     name: "\"instruments\"");
 
                             }
