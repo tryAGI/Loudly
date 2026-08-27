@@ -9,11 +9,11 @@ namespace Loudly
     public enum GenerateAiSongRequestKeyQuality
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Major,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Minor,
     }

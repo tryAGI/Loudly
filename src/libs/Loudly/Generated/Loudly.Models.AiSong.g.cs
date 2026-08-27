@@ -4,7 +4,7 @@
 namespace Loudly
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class AiSong
     {
@@ -57,7 +57,7 @@ namespace Loudly
         public int? Bpm { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("key")]
         public global::Loudly.MusicalKey? Key { get; set; }

@@ -9,51 +9,51 @@ namespace Loudly
     public enum GenerateAiSongRequestKeyRoot
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         A,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         A_Bb,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         B,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         C,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         C_Db,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         D,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         D_Eb,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         E,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         F,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         F_Gb,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         G,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         G_Ab,
     }

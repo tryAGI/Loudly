@@ -42,23 +42,23 @@ namespace Loudly
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         global::System.Text.Json.Serialization.JsonSerializerContext JsonSerializerContext { get; set; }
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public AccountClient Account { get; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public AiClient Ai { get; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public CatalogClient Catalog { get; }
 

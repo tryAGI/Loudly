@@ -128,7 +128,7 @@ namespace Loudly
                          __authorization.Location == "Header")
                 {
                     __httpRequest.Headers.Add(__authorization.Name, __authorization.Value);
-                } 
+                }
             }
                 global::Loudly.AutoSDKRequestOptionsSupport.ApplyHeaders(
                     request: __httpRequest,
