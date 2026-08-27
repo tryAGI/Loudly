@@ -4,7 +4,7 @@
 namespace Loudly
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class Error
     {

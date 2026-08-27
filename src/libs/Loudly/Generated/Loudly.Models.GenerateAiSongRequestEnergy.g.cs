@@ -9,15 +9,15 @@ namespace Loudly
     public enum GenerateAiSongRequestEnergy
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         High,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Low,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Original,
     }

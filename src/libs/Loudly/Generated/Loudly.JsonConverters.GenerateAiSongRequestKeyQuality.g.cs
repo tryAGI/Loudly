@@ -20,7 +20,7 @@ namespace Loudly.JsonConverters
                     {
                         return global::Loudly.GenerateAiSongRequestKeyQualityExtensions.ToEnum(stringValue) ?? default;
                     }
-                    
+
                     break;
                 }
                 case global::System.Text.Json.JsonTokenType.Number:

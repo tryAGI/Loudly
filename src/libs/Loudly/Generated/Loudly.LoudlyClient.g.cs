@@ -40,7 +40,7 @@ namespace Loudly
         internal global::System.Lazy<global::System.Text.Json.Serialization.JsonSerializerContext> JsonSerializerContextProvider { get; set; } = new(() => global::Loudly.SourceGenerationContext.Default);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public global::System.Text.Json.Serialization.JsonSerializerContext JsonSerializerContext
         {
@@ -50,7 +50,7 @@ namespace Loudly
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public AccountClient Account => new AccountClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
@@ -59,7 +59,7 @@ namespace Loudly
         };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public AiClient Ai => new AiClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
@@ -68,7 +68,7 @@ namespace Loudly
         };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public CatalogClient Catalog => new CatalogClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
